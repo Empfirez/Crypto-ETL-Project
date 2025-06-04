@@ -19,21 +19,25 @@
 
 
 ### Project Overview
-This data analysis project aims showcase the extraction of cryptocurrency data through the coinmarketcap api and subsequently transform the extracted data using Pandas. The cleaned dataframe can then be saved as a csv file to be loaded into SQL Server/
-Microsoft Power BI for data visualization.However plotly is used to visualize the cleaned dataset for the purpose of this project due to its compatibility with Pandas.
+This data analysis project aims showcase the extraction of cryptocurrency data through the CoinMarketCap API and subsequently transform the extracted data using Pandas. The cleaned dataset can then be saved as a csv file to be loaded into SQL Server/
+Microsoft Power BI for data visualization. However, Plotly is used to visualize the cleaned data for the purpose of this project due to its compatibility with Pandas.
 
 
 
 ### Data Sources
 
-The primary data source used for this analysis is the coinmarketcap api which is not only free to use, but also provides comprehensive documentation while having generous call limits.
+The primary data source used for this analysis is the CoinMarketCap API which is not only free to use, but also provides comprehensive coverage of key metrics such as price, volume, market capitalization, circulating supply, and percent change across multiple time frames. Not only that, it also provides well-documented endpoints, making it developer-friendly and easy to integrate as well as generous rate limits on the free tier, allowing for frequent and consistent data retrieval during the analysis.
 
 
 ### Tools
 
-- Python(Data Extraction)
+- Python(Programming Language)
 
+- Jupyter Notebook/VSCode(Development Environment)
+  
 - Pandas(Data Cleaning)
+
+- Requests/HTTP Client(API Calls)
   
 - Plotly/Seaborn(Data Visualization)
 
@@ -48,13 +52,13 @@ API Data Retrieval: Retrieved real-time and historical cryptocurrency data using
 
 Automated Data Retrieval: Automated the data retrieval process to obtain historical cryptocurrency data over a span of time.
 
+Missing Values Handling: Checked for any missing or null values in key fields such as name, id and price.
+
 Deduplication: Removed any duplicate entries resulting from overlapping API pulls or pagination handling.
 
 Column Dropping: Dropped columns that are not integral to the analysis process.
 
 Data Type Correction: Ensured consistency in data types such as float for price and volume fields and integer for rank.
-
-Missing Values Handling: Checked for any missing or null values in key fields such as name, id and price.
 
 Date Conversion: Converted string-based datetime fields (e.g., date_added, last_updated) into datetime objects for time-based analysis.
 
@@ -67,7 +71,7 @@ Caching or Rate Limiting Management: Implemented time delays or caching to respe
 
 ### Exploratory Data Analysis
 
-EDA is used to summarize the sales data and allows us gain a deeper understanding of the dataset. It answers key questions such as:
+EDA is used to summarize the sales data and allows us gain a deeper understanding of the dataset retrieved from the CoinMarketCap API. It answers key questions such as:
 
  - Which cryptocurrencies are leading in terms of market capitalization and trading volume?
 
