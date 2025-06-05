@@ -88,23 +88,105 @@ EDA is used to summarize the sales data and allows us gain a deeper understandin
 
 ### Data Analysis
 
-Cumulative sum of weekly sales for each store:
+During the analysis phase, the following steps were taken to process and explore the cryptocurrency data:
 
-     SELECT Store, Date, Weekly_Sales,
-	    SUM(Weekly_Sales) OVER(
-	    PARTITION BY Store
-	    ORDER BY Date) AS Cumulative_Weekly_Sales
-     FROM walmart_sales
-     ORDER BY Store, Date;
+1. The tags column in all datasets (listings_df, all_data_df, and hist_df) was originally in string format. These strings were converted into Python lists using ast.literal_eval() to enable easier filtering and analysis.
+
+	#### Converting tags column to actual list
+	```python
+	listings_df['tags'] = listings_df['tags'].apply(
+	    lambda x: ast.literal_eval(x) if pd.notna(x) and x.startswith('[') else []
+	)
+
+ 	all_data_df['tags'] = all_data_df['tags'].apply(
+	    lambda x: ast.literal_eval(x) if pd.notna(x) and x.startswith('[') else []
+	)
+	
+ 	hist_df['tags'] = hist_df['tags'].apply(
+	    lambda x: ast.literal_eval(x) if pd.notna(x) and x.startswith('[') else []
+	)
 
 
+2. Date-related columns such as date_added, last_updated, and last_updated.1 were converted from strings to datetime objects using pd.to_datetime() to facilitate time-based filtering, sorting, and visualization.
+   
+	#### Converting date column to datetime object
+ 	```python
+	date_cols = ['date_added', 'last_updated', 'last_updated.1' ]
+	for column in date_cols:
+	    if column in listings_df.columns:
+	        listings_df[column] = pd.to_datetime(listings_df[column])
+	    else:
+	        print(f"Column '{column}' not found in DataFrame.")
+	listings_df.dtypes
+
+
+3. Specific coins were located using both index-based access and conditional filtering to extract their data for inspection or comparison.
+   
+ 	 #### Locating name of the coin with index number 4256
+  	 ```python
+	listings_df.loc[4256,'name']
+	coin = listings_df.loc[listings_df['name'] == 'SmartMesh']
+
+
+4. A new DataFrame was created to isolate coins that experienced a positive price change over the last 90 days. Further filtering was applied to remove coins associated with specific tags and exclude entries with empty tag lists to focus on well-categorized projects
+	#### Listing only coins with positive change in the last 90 days and exlcude coins with specific tags/empty tag list
+	```python
+ 	positive_90_days_df = listings_df[listings_df['percent_change_90d']>0].sort_values(by='percent_change_90d', ascending=False)
+	exclude_list=['memes','base-ecosystem']
+	positive_90_days_df = positive_90_days_df[~positive_90_days_df['tags'].apply(lambda x: any(tag in exclude_list for tag in x))]
+	positive_90_days_df = positive_90_days_df[listings_df['tags'].apply(len) > 0]
+
+
+5. The top 10 coins by market dominance were extracted, and their combined dominance was calculated. If their total was less than 100%, a new entry labeled "Remaining" was added to represent the combined dominance of all other cryptocurrencies.
+	#### Listing the market dominance of top 10 coins and calculating the remaining market dominance %
+	```python	
+	top_10_market_dominance = top_10_df[['name','market_cap_dominance','symbol']]
+	if top_10_market_dominance['market_cap_dominance'].sum() < 100:
+	    top_10_market_dominance = pd.concat([
+	        top_10_market_dominance,
+	        pd.DataFrame([{'name':'Remaining','market_cap_dominance': 100 - top_10_market_dominance['market_cap_dominance'].sum()}])
+	    ])
+
+ 
+6. For a selected coin, short-term trends were analyzed by computing 15-minute rolling averages for near-term smoothing as well as a 30-minute rolling averages for a broader trend perspective.
+	####  Adding new moving average columns and calculating 15/30mins moving average
+	```python
+	coin='Bitcoin'
+	rolling_avg_15m_df = hist_df[hist_df['name'] == coin].copy()
+	rolling_avg_30m_df = rolling_avg_15m_df.copy()
+	rolling_avg_15m_df['rolling_average'] = rolling_avg_15m_df['price'].rolling(window=3).mean()
+	rolling_avg_30m_df['rolling_average'] = rolling_avg_30m_df['price'].rolling(window=6).mean()
 
 
 
 ### Data Visualization
 
+#### Top 10 crytocurrencies by 24h trading volume(USD)
+![image](https://github.com/user-attachments/assets/9a90f93b-6a29-4bb8-9197-61f87420d9ce)
 
 
+#### Market cap dominance
+![image](https://github.com/user-attachments/assets/90696f79-a2c7-4098-85ea-f05afc9cd00c)
+
+
+#### Percent change heatmap
+![image](https://github.com/user-attachments/assets/7f14e483-a45d-47b1-bea3-2c4d9649b493)
+
+
+#### Percent change over time
+![image](https://github.com/user-attachments/assets/c7e821e2-1bcb-43f9-a7c9-ecd3052a399c)
+
+
+#### Volume vs Price analysis
+![image](https://github.com/user-attachments/assets/700c5b25-5409-4b72-a2d8-187dbed6fd26)
+
+
+#### 15 minutes moving average
+![image](https://github.com/user-attachments/assets/51aa316b-8fbd-4be3-b283-d0b311006988)
+
+
+#### Correlation heatmap
+![image](https://github.com/user-attachments/assets/90addfee-060c-4238-967f-d8a38177e2d5)
 
 
 ### Results/Findings
