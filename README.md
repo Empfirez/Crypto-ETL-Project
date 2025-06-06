@@ -11,7 +11,6 @@
 - [Data Analysis](#data-analysis)
 - [Data Visualization](#data-visualization)
 - [Results/Findings](#resultsfindings)
-- [Recommendations](#recommendations)
 - [Limitations](#limitations)
 
 
