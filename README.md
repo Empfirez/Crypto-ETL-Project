@@ -71,11 +71,9 @@ Caching or Rate Limiting Management: Implemented time delays or caching to respe
 
 ### Exploratory Data Analysis
 
-EDA is used to summarize the sales data and allows us gain a deeper understanding of the dataset retrieved from the CoinMarketCap API. It answers key questions such as:
+EDA is used to summarize the data and allows us to gain a deeper understanding of the dataset retrieved from the CoinMarketCap API. It answers key questions such as:
 
  - Which cryptocurrencies are leading in terms of market capitalization and trading volume?
-
- - How do price movements vary across different time frames?
 
  - Which coins have shown the highest volatility or consistent growth?
 
@@ -158,6 +156,22 @@ During the analysis phase, the following steps were taken to process and explore
 	rolling_avg_30m_df['rolling_average'] = rolling_avg_30m_df['price'].rolling(window=6).mean()
 
 
+7. The top 10 tags were identified and average growth % within 90 days was calculated for each tag .
+	####  Identifying top 10 sectors and calculating growth %
+	```python
+	all_tags = list(chain.from_iterable(listings_df['tags']))
+	tag_counts = Counter(all_tags)
+	top_10_tags_list = tag_counts.most_common(10)
+	top_10_tags = [tag for tag, _ in top_10_tags_list]
+	top_10_tags_df = listings_df[listings_df['tags'].apply(lambda tags: any(tag in top_10_tags for tag in tags))]
+	tag_growth = defaultdict(list)
+	for _, row in top_10_tags_df.iterrows():
+	    for tag in row['tags']:
+	        if tag in top_10_tags:
+	            tag_growth[tag].append(row['percent_change_90d'])
+	avg_growth_per_tag = {tag: sum(values) / len(values) for tag, values in tag_growth.items()}
+	sorted_avg_growth = sorted(avg_growth_per_tag.items(), key=lambda x: x[1], reverse=True)
+
 
 ### Data Visualization
 
@@ -189,21 +203,26 @@ During the analysis phase, the following steps were taken to process and explore
 ![image](https://github.com/user-attachments/assets/90addfee-060c-4238-967f-d8a38177e2d5)
 
 
+#### Percent growth in 90 days for each sector
+![image](https://github.com/user-attachments/assets/c2e1f6d4-296b-41e5-9768-6d7271b585a2)
+
+
 ### Results/Findings
 
 After careful analysis, the results are as follows:
-
-  
-
-
-### Recommendations
-
-Based on analysis above, here are some recommended actions to take:
-
-
-
+1. The top 3 cryptocurrencies with the highest market capitalization are Bitcoin with 63.3%, followed by Ethereum with 9.01% and Tether USDT with 4.53%.
+2. The top 3 cryptocurrencies with the largest 24h trading volume are Tether USDT, Bitcoin and Dai respectively.
+3. Cryptocurrencies like Trump Dinner, ShibaBitcoin and Huobi Token experienced the largest gains within the last 90 days while other tokens such as First Digital USD, Celo Dollar and Ethena USDe experienced the least gains.
+4. Low R2 value shows that trading volume is not a strong predictor of price, other factors like market cap, supply, utility, speculation play much larger roles.
+5. Bitcoin has a strong positive correlation with Solana, Monero and Sui while Ethereum has a strong positive correlation with Aave, Dogecoin and BNB. AiAkita shows a negative correlation with most coins.
+6. Base-ecosystem sector experienced the largest growth of 16,121% in 90 days, followed by memes sector of 14,116% and bnb-chain-ecosystem of 4,555%.
+7. Trump Dinner, Mint Token and Launch Coin on Believe are the top 3 performing coins that were only added in the last 180 days.
 
 
 ### Limitations
+
+
+
+
 
 
