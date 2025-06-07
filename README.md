@@ -212,7 +212,7 @@ After careful analysis, the results are as follows:
 1. The top 3 cryptocurrencies with the highest market capitalization are Bitcoin with 63.3%, followed by Ethereum with 9.01% and Tether USDT with 4.53%.
 2. The top 3 cryptocurrencies with the largest 24h trading volume are Tether USDT, Bitcoin and Dai respectively.
 3. Cryptocurrencies like Trump Dinner, ShibaBitcoin and Huobi Token experienced the largest gains within the last 90 days while other tokens such as First Digital USD, Celo Dollar and Ethena USDe experienced the least gains.
-4. Low R2 value shows that trading volume is not a strong predictor of price, other factors like market cap, supply, utility, speculation play much larger roles.
+4. Extremely low R2 value shows that trading volume is not a strong predictor of price, other factors like market cap, supply, utility, speculation play much larger roles.
 5. Bitcoin has a strong positive correlation with Solana, Monero and Sui while Ethereum has a strong positive correlation with Aave, Dogecoin and BNB. AiAkita shows a negative correlation with most coins.
 6. Base-ecosystem sector experienced the largest growth of 16,121% in 90 days, followed by memes sector of 14,116% and bnb-chain-ecosystem of 4,555%.
 7. Trump Dinner, Mint Token and Launch Coin on Believe are the top 3 performing coins that were only added in the last 180 days.
@@ -220,8 +220,8 @@ After careful analysis, the results are as follows:
 
 ### Limitations
 
+- One limitation of the project would be the lack of access to historical data due to being on a free API plan which heavily limits the amount of endpoints and data you have access to. The lack of historical data also means that any time series analysis is heaviliy restricted and the method which I used to mitigate this restriction was to create a function that automatically makes the api call every 15-30 mins, and stores all the extracted data into a csv file for future analysis. Despite that, it is stil extremely difficult to reveal any long term trends based on the limited historical data that we are able to extract, thereby reducing the depth of the analysis.
 
+- Price changes might be influenced by news or regulations that are not captured in the data.
 
-
-
-
+- Some coins have self reported values which may lead to misinterpretation of analysis results.
