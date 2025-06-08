@@ -220,7 +220,7 @@ After careful analysis, the results are as follows:
 
 ### Limitations
 
-- One limitation of the project would be the lack of access to historical data due to being on a free API plan which heavily limits the amount of endpoints and data you have access to. The lack of historical data also means that any time series analysis is heaviliy restricted and the method which I used to mitigate this restriction was to create a function that automatically makes the api call every 15-30 mins, and stores all the extracted data into a csv file for future analysis. Despite that, it is stil extremely difficult to reveal any long term trends based on the limited historical data that we are able to extract, thereby reducing the depth of the analysis.
+- One limitation of the project would be the lack of access to historical data due to being on a free API plan which heavily limits the amount of endpoints and data you have access to. The lack of historical data also means that any time series analysis is heavily restricted and the method which I used to mitigate this restriction was to create a function that automatically makes the api call every 15-30 mins, and stores all the extracted data into a csv file for future analysis. Despite that, it is still extremely difficult to reveal any long term trends based on the limited historical data that we are able to extract, thereby reducing the depth of the analysis.
 
 - Price changes might be influenced by news or regulations that are not captured in the data.
 
